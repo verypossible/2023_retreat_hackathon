@@ -19,11 +19,15 @@ defmodule RetreatHack.TempSensorMock do
   end
 
   @impl GenServer
-  def handle_info(:get_sensor_readings, state) do
+  def handle_info(:get_sensor_readings, _) do
     Logger.info("Processing sensor readings")
 
-    do_work()
+    {:ok, humidity, temperature} = do_work()
     schedule_work()
+    state =
+      %{}
+      |> Map.put(:humidity, humidity)
+      |> Map.put(:temperature, temperature)
     {:noreply, state}
   end
 
@@ -34,17 +38,22 @@ defmodule RetreatHack.TempSensorMock do
 
   @impl TempSensorBehavior
   def get_humidity(_) do
-    :rand.uniform(100)
+    {:ok, :rand.uniform() * (100.0)}
   end
 
   @impl TempSensorBehavior
   def get_temperature(_) do
-    :rand.uniform(50)
+    {:ok, :rand.uniform() * (50.0)}
   end
 
   defp do_work() do
-    Logger.info("Humidity: " <> Integer.to_string(get_humidity(123)))
-    Logger.info("Temperature: " <> Integer.to_string(get_temperature(123)))
+    {:ok, hum} = get_humidity("abc")
+    humidity = Float.to_string(hum)
+    {:ok, temp} = get_temperature("abc")
+    temperature = Float.to_string(temp)
+    Logger.info("Humidity: " <> humidity)
+    Logger.info("Temperature: " <> temperature)
+    {:ok, humidity, temperature}
   end
 
   defp schedule_work do
