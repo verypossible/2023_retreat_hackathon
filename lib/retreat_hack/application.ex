@@ -27,6 +27,7 @@ defmodule RetreatHack.Application do
       # Children that only run on the host
       # Starts a worker by calling: RetreatHack.Worker.start_link(arg)
       # {RetreatHack.Worker, arg},
+      Application.get_env(:retreat_hack, :temp_sensor_module)
     ]
   end
 
@@ -35,6 +36,7 @@ defmodule RetreatHack.Application do
       # Children for all targets except host
       # Starts a worker by calling: RetreatHack.Worker.start_link(arg)
       # {RetreatHack.Worker, arg},
+      Application.get_env(:retreat_hack, :temp_sensor_module)
     ]
   end
 
