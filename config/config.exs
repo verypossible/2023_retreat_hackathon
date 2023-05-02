@@ -20,6 +20,7 @@ config :nerves, :firmware, rootfs_overlay: "rootfs_overlay"
 
 config :nerves, source_date_epoch: "1678247969"
 
+config :retreat_hack, temp_sensor_module: RetreatHack.TempSensorLive
 
 if Mix.target() == :host do
   import_config "host.exs"
